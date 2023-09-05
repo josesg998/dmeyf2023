@@ -13,31 +13,13 @@ setwd("~/Data Mining/DM_EyF_23/dmeyf2023")
 # cargo el dataset
 dataset <- fread("../datasets/competencia_01.csv")
 
+CORTE <- 9503
+
 dtrain <- dataset[foto_mes == 202103] # defino donde voy a entrenar
 dapply <- dataset[foto_mes == 202105] # defino donde voy a aplicar el modelo
 
-seeds <- c(290497, 540187, 987851, 984497, 111893)
-
-CORTE <- 9503
-
-get_percentage_sample_of_data_stratified_by_one_variable <- function(data, variable, percentage) {
-  # Esta funcion toma una muestra estratificada de una variable
-  # data: dataset
-  # variable: variable por la cual se estratifica
-  # percentage: porcentaje de la muestra
-  # return: data.table con la muestra
-  data[, .SD[sample(.N, round(.N * percentage), replace = FALSE)], by = variable]
-}
-
-for (i in 1:length(seeds)){
-
-set.seed(seeds[i])
-
-dtrain <- get_percentage_sample_of_data_stratified_by_one_variable(dtrain,"clase_ternaria",.5)
-
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
-
 modelo <- rpart(
         formula = "clase_ternaria ~ .",
         data = dtrain, # los datos donde voy a entrenar
@@ -77,7 +59,6 @@ dapply[ , Predicted := 0L ]
 dapply[ 1:CORTE, Predicted := 1L ]
 
 
-
 # solo le envio estimulo a los registros
 #  con probabilidad de BAJA+2 mayor  a  1/40
 #dapply[, Predicted := as.numeric(prob_baja2 > 1 / 40)]
@@ -85,12 +66,10 @@ dapply[ 1:CORTE, Predicted := 1L ]
 # genero el archivo para Kaggle
 # primero creo la carpeta donde va el experimento
 dir.create("./exp/")
-dir.create("./exp/BO2001_muestras")
+dir.create("./exp/KA2001")
 
 # solo los campos para Kaggle
-
 fwrite(dapply[, list(numero_de_cliente, Predicted)],
-        file = paste0("./exp/BO2001_muestras/K101_001_sample_",i,".csv"),
-        sep = ",")}
-
-
+        file = "./exp/KA2001/K101_001.csv",
+        sep = ","
+)
