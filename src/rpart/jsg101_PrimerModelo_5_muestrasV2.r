@@ -18,7 +18,7 @@ dapply <- dataset[foto_mes == 202105] # defino donde voy a aplicar el modelo
 
 seeds <- c(290497, 540187, 987851, 984497, 111893)
 
-CORTE <- 9503
+CORTE <- 9230
 
 get_percentage_sample_of_data_stratified_by_one_variable <- function(data, variable, percentage) {
   # Esta funcion toma una muestra estratificada de una variable
@@ -43,8 +43,8 @@ modelo <- rpart(
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
         cp = -1, # esto significa no limitar la complejidad de los splits
-        minsplit = 659, # minima cantidad de registros para que se haga el split
-        minbucket = 200, # tamaño minimo de una hoja
+        minsplit = 725, # minima cantidad de registros para que se haga el split
+        minbucket = 212, # tamaño minimo de una hoja
         maxdepth = 12
 ) # profundidad maxima del arbol
 
@@ -90,7 +90,7 @@ dir.create("./exp/BO2001_muestras")
 # solo los campos para Kaggle
 
 fwrite(dapply[, list(numero_de_cliente, Predicted)],
-        file = paste0("./exp/BO2001_muestras/K101_001_sample_",i,".csv"),
+        file = paste0("./exp/BO2001_muestras/K101_002_sample_",i,".csv"),
         sep = ",")}
 
 
