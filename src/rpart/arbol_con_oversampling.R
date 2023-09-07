@@ -26,10 +26,10 @@ pesos <- copy( dtrain[, ifelse( clase_ternaria=="CONTINUA",   1.0, 100.0  ) ] )
 param <- list()
 
 param$cp <-  -1 # esto significa no limitar la complejidad de los splits
-param$minsplit <-  659 # minima cantidad de registros para que se haga el split
-param$minbucket <-  200 # tamaño minimo de una hoja
+param$minsplit <-  725 # minima cantidad de registros para que se haga el split
+param$minbucket <-  212 # tamaño minimo de una hoja
 param$maxdepth <-  12 # profundidad maxima del arbol
-param$corte <- 9503
+param$corte <- 9230
 
 
 # genero el modelo,  aqui se construye el arbol
