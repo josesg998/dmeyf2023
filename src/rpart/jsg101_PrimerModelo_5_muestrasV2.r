@@ -13,6 +13,8 @@ setwd("~/Data Mining/DM_EyF_23/dmeyf2023")
 # cargo el dataset
 dataset <- fread("../datasets/competencia_01.csv")
 
+dataset[ , clase_binaria := ifelse( clase_ternaria=="CONTINUA", "NEG", "POS" ) ]
+
 dtrain <- dataset[foto_mes == 202103] # defino donde voy a entrenar
 dapply <- dataset[foto_mes == 202105] # defino donde voy a aplicar el modelo
 
@@ -39,7 +41,7 @@ dtrain <- get_percentage_sample_of_data_stratified_by_one_variable(dtrain,"clase
 # quiero predecir clase_ternaria a partir de el resto de las variables
 
 modelo <- rpart(
-        formula = "clase_ternaria ~ .",
+        formula = "clase_binaria ~ . - clase_ternaria",
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
         cp = -1, # esto significa no limitar la complejidad de los splits
@@ -68,9 +70,10 @@ prediccion <- predict(
 # cada columna es el vector de probabilidades
 
 # agrego a dapply una columna nueva que es la probabilidad de BAJA+2
-dapply[, prob_baja2 := prediccion[, "BAJA+2"]]
+# agrego a dapply una columna nueva que es la probabilidad de BAJA
+dapply[, prob_baja := prediccion[, "POS"]]
 
-setorder( dapply, -prob_baja2 )
+setorder( dapply, -prob_baja )
 
 # grabo el submit a Kaggle
 dapply[ , Predicted := 0L ]
@@ -90,7 +93,7 @@ dir.create("./exp/BO2001_muestras")
 # solo los campos para Kaggle
 
 fwrite(dapply[, list(numero_de_cliente, Predicted)],
-        file = paste0("./exp/BO2001_muestras/K101_002_sample_",i,".csv"),
+        file = paste0("./exp/BO2001_muestras/K101_001_binaria_sample_",i,".csv"),
         sep = ",")}
 
 
