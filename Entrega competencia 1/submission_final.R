@@ -44,14 +44,6 @@ modelo <- rpart(
 # grafico el arbol
 prp(modelo,extra = 101, digits = -5,branch = 1, type = 4, varlen = 0, faclen = 0)
 
-#comparo importancias con etiuquetas
-diccionario <- data.table(readODS::read_ods("../datasets/DiccionarioDatos_2023.ods"))
-
-importancias <- data.table(importance=as.vector(modelo$variable.importance),
-                           campo=as.vector(names(modelo$variable.importance)))
-
-evaluacion_importancias <- merge(diccionario,importancias)
-
 # aplico el modelo a los datos nuevos
 prediccion <- predict(
   object = modelo,
