@@ -1,8 +1,15 @@
-using CSV,  DataFrames
+using CSV,  DataFrames, GZip
 
 periodo_anterior(x::Integer) =  x % 100 > 1  ?  x-1  : 12 + (div(x,100) -1) * 100
 
-df = CSV.read("competencia_01_crudo.csv", DataFrame)
+cd("../buckets/b1/datasets")
+
+using CSVFiles, DataFrames, FileIO
+
+df = GZip.open("competencia_02_crudo.csv.gz", "r") do io
+  CSV.read(io)
+end
+
 sort!(df, [:numero_de_cliente, :foto_mes])
 
 global periodo_ultimo = maximum( df.foto_mes )
