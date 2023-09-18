@@ -1,14 +1,10 @@
-using CSV,  DataFrames, GZip
+using CSV,  DataFrames,CodecZlib
 
 periodo_anterior(x::Integer) =  x % 100 > 1  ?  x-1  : 12 + (div(x,100) -1) * 100
 
 cd("../buckets/b1/datasets")
 
-using CSVFiles, DataFrames, FileIO
-
-df = GZip.open("competencia_02_crudo.csv.gz", "r") do io
-  CSV.read(io)
-end
+df = open(fh -> CSV.read(GzipDecompressorStream(fh), DataFrame), "competencia_02_crudo.csv.gz")
 
 sort!(df, [:numero_de_cliente, :foto_mes])
 
@@ -34,4 +30,6 @@ for i in 1:last
   end
 end
 
-CSV.write( "competencia_01_julia.csv", df )
+open(GzipCompressorStream, "competencia_02.csv.gz", "w") do stream
+    CSV.write(stream, df)
+end
