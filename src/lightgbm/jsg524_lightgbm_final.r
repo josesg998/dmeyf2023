@@ -24,11 +24,11 @@ PARAM$input$future <- c(202107) # meses donde se aplica el modelo
 
 PARAM$finalmodel$semilla <- 290497
 
-PARAM$finalmodel$num_iterations <- 4928
-PARAM$finalmodel$learning_rate <- 0.0189943331895954
-PARAM$finalmodel$feature_fraction <- 0.892623977897483
-PARAM$finalmodel$min_data_in_leaf <- 785
-PARAM$finalmodel$num_leaves <- 666
+PARAM$finalmodel$num_iterations <- 4451
+PARAM$finalmodel$learning_rate <- 0.0142080438733417
+PARAM$finalmodel$feature_fraction <- 0.51543084784121
+PARAM$finalmodel$min_data_in_leaf <- 177
+PARAM$finalmodel$num_leaves <- 932
 
 
 PARAM$finalmodel$max_bin <- 31
@@ -136,7 +136,7 @@ setorder(tb_entrega, -prob)
 # suba TODOS los archivos a Kaggle
 # espera a la siguiente clase sincronica en donde el tema sera explicado
 
-cortes <- seq(8000, 13000, by = 500)
+cortes <- sort(c(seq(8000, 15000, by = 500),14995))
 for (envios in cortes) {
   tb_entrega[, Predicted := 0L]
   tb_entrega[1:envios, Predicted := 1L]
