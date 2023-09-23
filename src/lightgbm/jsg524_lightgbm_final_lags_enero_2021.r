@@ -64,6 +64,9 @@ dataset[, paste((columnas_a_calcular),"lag_1",sep="_") := lapply(.SD, function(x
 dataset[, paste((columnas_a_calcular),"lag_2",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 2)), 
         by = numero_de_cliente, .SDcols = columnas_a_calcular]
 
+# los campos que se van a utilizar
+campos_buenos <- setdiff(colnames(dataset), c("clase_ternaria", "clase01"))
+
 # establezco donde entreno
 dataset[, train := 0L]
 dataset[foto_mes %in% PARAM$input$training, train := 1L]
