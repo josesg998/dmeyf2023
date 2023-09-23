@@ -58,10 +58,10 @@ campos_buenos <- setdiff(colnames(dataset), c("clase_ternaria", "clase01"))
 
 columnas_a_calcular <- campos_buenos[!campos_buenos %in% c("numero_de_cliente","foto_mes")]
 
-dataset[, paste((columnas_a_calcular),"lag_1",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 1,fill=0)), 
+dataset[, paste((columnas_a_calcular),"lag_1",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 1)), 
         by = numero_de_cliente, .SDcols = columnas_a_calcular]
 
-dataset[, paste((columnas_a_calcular),"lag_2",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 2,fill=0)), 
+dataset[, paste((columnas_a_calcular),"lag_2",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 2)), 
         by = numero_de_cliente, .SDcols = columnas_a_calcular]
 
 # establezco donde entreno
