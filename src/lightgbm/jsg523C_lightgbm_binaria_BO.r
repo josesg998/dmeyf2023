@@ -35,8 +35,8 @@ options(error = function() {
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
 
-PARAM$experimento <- "HT5230B"
-# incluyo todo 2019 y pruebo usar lag -1, lag -2 y rank
+PARAM$experimento <- "HT5230C"
+# incluyo todo 2019 y pruebo usar lag -1, lag -2 y rank sumado a un 10% de undersampling
 
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
