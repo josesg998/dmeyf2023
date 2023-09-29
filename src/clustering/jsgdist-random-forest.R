@@ -23,3 +23,14 @@ dataset <- dataset[dataset$clase_ternaria=='BAJA+1' & foto_mes %in% PARAM$input$
 dataset[is.na(dataset), ] <- 0
 
 proximidades <- randomForest(dataset, ntree = 1000, proximity=TRUE)$proximity
+
+# creo las carpetas donde van los resultados
+# creo la carpeta donde va el experimento
+dir.create("./exp/", showWarnings = FALSE)
+dir.create(paste0("./exp/", PARAM$experimento, "/"), showWarnings = FALSE)
+
+# Establezco el Working Directory DEL EXPERIMENTO
+setwd(paste0("./exp/", PARAM$experimento, "/"))
+
+fwrite(proximidades,file = paste0(PARAM$experimento, "_", envios, ".csv"),sep = ",")
+
