@@ -1,3 +1,7 @@
+# limpio la memoria
+rm(list = ls()) # remove all objects
+gc() # garbage collection
+
 require("data.table")
 require("randomForest")
 
@@ -32,5 +36,5 @@ dir.create(paste0("./exp/", PARAM$experimento, "/"), showWarnings = FALSE)
 # Establezco el Working Directory DEL EXPERIMENTO
 setwd(paste0("./exp/", PARAM$experimento, "/"))
 
-fwrite(proximidades,file = paste0(PARAM$experimento, "_", envios, ".csv"),sep = ",")
+fwrite(proximidades,file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
