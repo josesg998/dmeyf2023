@@ -15,7 +15,7 @@ require("lightgbm")
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
 PARAM$experimento <- "KA5240_BOB_59"
-# uso iteracion 59 del BO B
+# uso iteracion 62 del BO B
 
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
@@ -28,11 +28,11 @@ PARAM$input$future <- c(202107) # meses donde se aplica el modelo
 
 PARAM$finalmodel$semilla <- 290497
 
-PARAM$finalmodel$num_iterations <- 1261
-PARAM$finalmodel$learning_rate <- 0.10444697495036
-PARAM$finalmodel$feature_fraction <- 0.203698063548547
-PARAM$finalmodel$min_data_in_leaf <- 2473
-PARAM$finalmodel$num_leaves <- 823
+PARAM$finalmodel$num_iterations <- 1193
+PARAM$finalmodel$learning_rate <- 0.184489579364137
+PARAM$finalmodel$feature_fraction <- 0.993656525220601
+PARAM$finalmodel$min_data_in_leaf <- 1922
+PARAM$finalmodel$num_leaves <- 447
 
 
 PARAM$finalmodel$max_bin <- 31
