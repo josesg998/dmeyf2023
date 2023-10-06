@@ -43,5 +43,5 @@ dir.create(paste0("./exp/", PARAM$experimento, "/"), showWarnings = FALSE)
 # Establezco el Working Directory DEL EXPERIMENTO
 setwd(paste0("./exp/", PARAM$experimento, "/"))
 
-fwrite(proximidades,file = paste0(PARAM$experimento, ".csv"),sep = ",")
+fwrite(proximidades[,list(numero_de_cliente,labels)],file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
