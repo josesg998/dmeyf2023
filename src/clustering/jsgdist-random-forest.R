@@ -11,9 +11,9 @@ PARAM$experimento <- "DRF"
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
 
 # los meses en los que vamos a entrenar
-PARAM$input$training <- c(201901, 201902, 201903, 201904, 201905,201906,201907,
-                          201908,201909,201910,201911,201912,
-                          202101, 202102, 202103, 202104, 202105)
+#PARAM$input$training <- c(201901, 201902, 201903, 201904, 201905,201906,201907,
+#                          201908,201909,201910,201911,201912,
+#                          202101, 202102, 202103, 202104, 202105)
 
 
 # Aqui empieza el programa
@@ -22,11 +22,18 @@ setwd("~/buckets/b1")
 # cargo el dataset donde voy a entrenar
 dataset <- fread(PARAM$input$dataset, stringsAsFactors = TRUE)
 
-dataset <- dataset[dataset$clase_ternaria=='BAJA+1' & foto_mes %in% PARAM$input$training]
+dataset1 <- dataset[dataset$clase_ternaria=='BAJA+2']
 
-dataset[is.na(dataset), ] <- 0
+dataset2 <- dataset[dataset$numero_de_cliente %in% unique(dataset1$numero_de_cliente)]
 
-proximidades <- randomForest(dataset, ntree = 1000, proximity=TRUE)$proximity
+dataset1[is.na(dataset1), ] <- 0
+
+proximidades <- randomForest(dataset1, ntree = 1000, proximity=TRUE)$proximity
+
+# Realizar clustering utilizando las proximidades
+clusters <- hclust(as.dist(1 - proximidades))
+
+dataset1[labels:= clusters$labels]
 
 # creo las carpetas donde van los resultados
 # creo la carpeta donde va el experimento
