@@ -63,3 +63,5 @@ fwrite(dataset1[,list(numero_de_cliente,
                           labels_11
                           )],file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
+saveRDS(hclust_result,file="resultado_clustering.rds")
+
