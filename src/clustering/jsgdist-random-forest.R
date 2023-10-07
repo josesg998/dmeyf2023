@@ -28,12 +28,20 @@ dataset2 <- dataset[dataset$numero_de_cliente %in% unique(dataset1$numero_de_cli
 
 dataset1[is.na(dataset1), ] <- 0
 
-proximidades <- randomForest(dataset1, ntree = 1000, proximity=TRUE)$proximity
+modelo <- randomForest(dataset1, ntree = 1000, proximity=TRUE)
+
+proximidades <- modelo$proximity
 
 # Realizar clustering utilizando las proximidades
-clusters <- hclust(as.dist(1 - proximidades))
+hclust_result <- hclust(as.dist(1 - proximidades))
 
-dataset1[labels:= clusters$labels]
+# Realiza el corte en el dendrograma para obtener 7 clusters
+clusters <- cutree(hclust_result, k = 7)
+
+for (k in 3:11){
+  clusters <- cutree(hclust_result, k = k)
+  dataset1[,paste0("labels_",k):= clusters]
+}
 
 # creo las carpetas donde van los resultados
 # creo la carpeta donde va el experimento
@@ -43,5 +51,15 @@ dir.create(paste0("./exp/", PARAM$experimento, "/"), showWarnings = FALSE)
 # Establezco el Working Directory DEL EXPERIMENTO
 setwd(paste0("./exp/", PARAM$experimento, "/"))
 
-fwrite(proximidades[,list(numero_de_cliente,labels)],file = paste0(PARAM$experimento, ".csv"),sep = ",")
+fwrite(dataset1[,list(numero_de_cliente,
+                          labels_3,
+                          labels_4,
+                          labels_5,
+                          labels_6,
+                          labels_7,
+                          labels_8,
+                          labels_9,
+                          labels_10,
+                          labels_11
+                          )],file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
