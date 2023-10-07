@@ -6,7 +6,7 @@ require("data.table")
 require("randomForest")
 
 PARAM <- list()
-PARAM$experimento <- "DRF"
+PARAM$experimento <- "DRF2"
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
 
@@ -33,15 +33,12 @@ dataset2 <- dataset[dataset$numero_de_cliente %in% unique(dataset1$numero_de_cli
 
 dataset1[is.na(dataset1), ] <- 0
 
-modelo <- randomForest(dataset1[,..campos_buenos], ntree = 1000, proximity=TRUE)
+modelo <- randomForest(dataset1[,..campos_buenos], ntree = 1000, proximity=TRUE,oob.prox = T)
 
 proximidades <- modelo$proximity
 
 # Realizar clustering utilizando las proximidades
-hclust_result <- hclust(as.dist(1 - proximidades))
-
-# Realiza el corte en el dendrograma para obtener 7 clusters
-clusters <- cutree(hclust_result, k = 7)
+hclust_result <- hclust(as.dist(1 - proximidades),method = "ward.D2")
 
 for (k in 3:11){
   clusters <- cutree(hclust_result, k = k)
@@ -68,5 +65,8 @@ fwrite(dataset1[,list(numero_de_cliente,
                           labels_11
                           )],file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
+saveRDS(hclust_result,file="resultado_clustering.rds")
+fwrite(data.table(modelo$importance,keep.rownames = T),file="importance.txt",sep='\t',dec = ",")
+setwd("../../../../dmeyf2023/exp/DRF/")
 saveRDS(hclust_result,file="resultado_clustering.rds")
 fwrite(data.table(modelo$importance,keep.rownames = T),file="importance.txt",sep='\t',dec = ",")
