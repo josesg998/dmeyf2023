@@ -22,13 +22,18 @@ setwd("~/buckets/b1")
 # cargo el dataset donde voy a entrenar
 dataset <- fread(PARAM$input$dataset, stringsAsFactors = TRUE)
 
+campos_buenos <- setdiff(
+  colnames(dataset),
+  c("numero_de_cliente", "foto_mes", "clase_ternaria")
+)
+
 dataset1 <- dataset[dataset$clase_ternaria=='BAJA+2']
 
 dataset2 <- dataset[dataset$numero_de_cliente %in% unique(dataset1$numero_de_cliente)]
 
 dataset1[is.na(dataset1), ] <- 0
 
-modelo <- randomForest(dataset1, ntree = 1000, proximity=TRUE)
+modelo <- randomForest(dataset1[,..campos_buenos], ntree = 1000, proximity=TRUE)
 
 proximidades <- modelo$proximity
 
@@ -64,4 +69,4 @@ fwrite(dataset1[,list(numero_de_cliente,
                           )],file = paste0(PARAM$experimento, ".csv"),sep = ",")
 
 saveRDS(hclust_result,file="resultado_clustering.rds")
-
+fwrite(data.table(modelo$importance,keep.rownames = T),file="importance.txt",sep='\t',dec = ",")
