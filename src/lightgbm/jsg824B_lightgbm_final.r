@@ -103,10 +103,9 @@ dataset[, clase01 := ifelse(clase_ternaria %in% c("BAJA+2", "BAJA+1"), 1L, 0L)]
 
 dataset <- dataset[foto_mes %in% append(PARAM$input$training,PARAM$input$future)]
 
+#--------------------------------------
 # los campos que se van a utilizar
 columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria", "clase01"))
-
-#--------------------------------------
 
 
 for (mes in unique(dataset$foto_mes)){
@@ -125,6 +124,9 @@ variables_monetarias <- colnames(dataset)[grepl("^m", colnames(dataset))]
 #CALCULO RANK
 dataset[, paste0(variables_monetarias,"_rank") := lapply(.SD, function(x) rank(-x)),
         by = foto_mes, .SDcols = variables_monetarias]
+
+# los campos que se van a utilizar
+columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria", "clase01"))
 
 for (i in 1:6){
   dataset[, paste((columnas_a_calcular),paste0("lag_",i),sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = i)), 
