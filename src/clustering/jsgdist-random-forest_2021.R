@@ -6,14 +6,12 @@ require("data.table")
 require("randomForest")
 
 PARAM <- list()
-PARAM$experimento <- "DRF2"
+PARAM$experimento <- "DRF_2021"
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
 
 # los meses en los que vamos a entrenar
-#PARAM$input$training <- c(201901, 201902, 201903, 201904, 201905,201906,201907,
-#                          201908,201909,201910,201911,201912,
-#                          202101, 202102, 202103, 202104, 202105)
+PARAM$input$training <- c(202101, 202102, 202103, 202104, 202105)
 
 
 # Aqui empieza el programa
@@ -21,6 +19,7 @@ setwd("~/buckets/b1")
 
 # cargo el dataset donde voy a entrenar
 dataset <- fread(PARAM$input$dataset, stringsAsFactors = TRUE)
+dataset <- dataset[dataset$foto_mes %in% PARAM$input$training]
 
 campos_buenos <- setdiff(
   colnames(dataset),
@@ -28,8 +27,6 @@ campos_buenos <- setdiff(
 )
 
 dataset1 <- dataset[dataset$clase_ternaria=='BAJA+2']
-
-dataset2 <- dataset[dataset$numero_de_cliente %in% unique(dataset1$numero_de_cliente)]
 
 dataset1[is.na(dataset1), ] <- 0
 
