@@ -6,7 +6,7 @@ require("data.table")
 require("randomForest")
 
 PARAM <- list()
-PARAM$experimento <- "DRF_2021"
+PARAM$experimento <- "DRF_2021_NAS_imputados"
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
 
@@ -28,9 +28,9 @@ campos_buenos <- setdiff(
 
 dataset1 <- dataset[dataset$clase_ternaria=='BAJA+2']
 
-dataset1[is.na(dataset1), ] <- 0
+dataset1_sin_nas <- na.roughfix(dataset1[,..campos_buenos])
 
-modelo <- randomForest(dataset1[,..campos_buenos], ntree = 1000, proximity=TRUE,oob.prox = T)
+modelo <- randomForest(dataset1_sin_nas, ntree = 1000, proximity=TRUE,oob.prox = T)
 
 proximidades <- modelo$proximity
 
