@@ -30,8 +30,8 @@ PARAM$BO_iter <- 24  # iteraciones inteligentes   24= 40 - 4*4
 
 PARAM$input$training <- c(201901, 201902, 201903, 201904, 201905,201906,201907,
                           201908,201909,201910,201911,201912,
-                          202101, 202102, 202103,202104)
-PARAM$input$testing <- c(202105)
+                          202101, 202102, 202103,202104,202105)
+PARAM$input$testing <- c(202107)
 
 # Aqui se cargan los hiperparametros que se optimizan
 #  en la Bayesian Optimization
