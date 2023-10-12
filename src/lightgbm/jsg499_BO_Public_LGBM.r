@@ -288,28 +288,9 @@ setwd("~/buckets/b1/")
 dataset <- fread("./datasets/competencia_02.csv.gz")
 
 # los campos que se van a utilizar
-columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria", "clase01"))
-
-#--------------------------------------
-
-
-#for (mes in unique(dataset$foto_mes)){
-#  for (columna in columnas_a_calcular){
-#    if (all(dataset[foto_mes==mes,{{columna}}]==0)==TRUE){
-#      dataset[dataset$foto_mes==mes,{{columna}}] = NA
-#    }
-#  }
-#}
-
-
-#--------------------------------------
-# los campos que se van a utilizar
 campos_buenos <- setdiff(colnames(dataset), c("clase_ternaria", "clase01"))
 
-
-
-#   aqui deben calcularse los  lags y  lag_delta
-#   Sin lags no hay paraiso !  corta la bocha
+#--------------------------------------
 
 columnas_a_calcular <- campos_buenos[!campos_buenos %in% c("numero_de_cliente","foto_mes")]
 
@@ -326,7 +307,6 @@ dataset[, (paste(columnas_a_calcular, "rank", sep = "_")) := lapply(.SD, functio
 
 # los campos que se van a utilizar
 campos_buenos <- setdiff(colnames(dataset), c("clase_ternaria", "clase01"))
-
 
 # creo la carpeta donde va el experimento
 #  HT  representa  Hiperparameter Tuning
