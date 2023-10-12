@@ -269,13 +269,13 @@ EstimarGanancia_lightgbm <- function(x) {
   xx$early_stopping_rounds <- NULL
   xx$num_iterations <- modelo_train$best_iter
   xx$estimulos <- cantidad_test_normalizada
-  xx$ganancia <- ganancia_test_normalizada
+  xx$ganancia <- ganancia_public
   xx$iteracion_bayesiana <- GLOBAL_iteracion
   
   loguear(xx, arch = "BO_log.txt")
   
   set.seed(PARAM$semilla_azar, kind = "L'Ecuyer-CMRG")
-  return(ganancia_test_normalizada)
+  return(ganancia_public)
 }
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
