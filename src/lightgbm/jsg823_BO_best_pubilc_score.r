@@ -307,13 +307,13 @@ columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_me
 #--------------------------------------
 
 
-for (mes in unique(dataset$foto_mes)){
-  for (columna in columnas_a_calcular){
-    if (all(dataset[foto_mes==mes,{{columna}}]==0)==TRUE){
-      dataset[dataset$foto_mes==mes,{{columna}}] = NA
-    }
-  }
-}
+#for (mes in unique(dataset$foto_mes)){
+#  for (columna in columnas_a_calcular){
+#    if (all(dataset[foto_mes==mes,{{columna}}]==0)==TRUE){
+#      dataset[dataset$foto_mes==mes,{{columna}}] = NA
+#    }
+#  }
+#}
 
 
 #--------------------------------------
