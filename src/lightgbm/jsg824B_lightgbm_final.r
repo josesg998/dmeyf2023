@@ -16,7 +16,8 @@ require("lightgbm")
 
 # dejo de pisar las variables rank a las originales
 PARAM <- list()
-PARAM$experimento <- "KA8240B"
+PARAM$experimento <- "KA8240_resultado_BO"
+#resultado del bo del mejor public score
 
 PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
 
@@ -26,13 +27,13 @@ PARAM$input$training <- c(201901, 201902, 201903, 201904, 201905,201906,201907,
                           202101, 202102, 202103, 202104, 202105)
 PARAM$input$future <- c(202107) # meses donde se aplica el modelo
 
-PARAM$finalmodel$semilla <- 290497
+PARAM$finalmodel$semilla <- 540187
 
-PARAM$finalmodel$num_iterations <- 4451
-PARAM$finalmodel$learning_rate <- 0.0142080438733417
-PARAM$finalmodel$feature_fraction <- 0.51543084784121
-PARAM$finalmodel$min_data_in_leaf <- 177
-PARAM$finalmodel$num_leaves <- 932
+PARAM$finalmodel$num_iterations <- 1942
+PARAM$finalmodel$learning_rate <- 0.0224797349626415
+PARAM$finalmodel$feature_fraction <- 0.927930716657244
+PARAM$finalmodel$min_data_in_leaf <- 18213
+PARAM$finalmodel$num_leaves <- 233
 
 
 PARAM$finalmodel$max_bin <- 31
@@ -107,35 +108,19 @@ dataset <- dataset[foto_mes %in% append(PARAM$input$training,PARAM$input$future)
 # los campos que se van a utilizar
 columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria", "clase01"))
 
+dataset[, paste((columnas_a_calcular),"lag_1",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 1)), 
+        by = numero_de_cliente, .SDcols = columnas_a_calcular]
 
-for (mes in unique(dataset$foto_mes)){
-  for (columna in columnas_a_calcular){
-    if (all(dataset[foto_mes==mes,{{columna}}]==0)==TRUE){
-      dataset[dataset$foto_mes==mes,{{columna}}] = NA
-    }
-  }
-}
+dataset[, paste((columnas_a_calcular),"lag_2",sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = 2)), 
+        by = numero_de_cliente, .SDcols = columnas_a_calcular]
 
 
-#--------------------------------------
+dataset[, (paste(columnas_a_calcular, "rank", sep = "_")) := lapply(.SD, function(x) rank(-x)),
+        by = foto_mes, .SDcols = columnas_a_calcular]
 
-variables_monetarias <- colnames(dataset)[grepl("^m", colnames(dataset))]
-
-#CALCULO RANK
-dataset[, paste0(variables_monetarias,"_rank") := lapply(.SD, function(x) rank(-x)),
-        by = foto_mes, .SDcols = variables_monetarias]
-
-# los campos que se van a utilizar
-columnas_a_calcular <- setdiff(colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria", "clase01"))
-
-for (i in 1:6){
-  dataset[, paste((columnas_a_calcular),paste0("lag_",i),sep="_") := lapply(.SD, function(x) shift(x, type = "lag", n = i)), 
-          by = numero_de_cliente, .SDcols = columnas_a_calcular]
-}
 
 # los campos que se van a utilizar
 campos_buenos <- setdiff(colnames(dataset), c("clase_ternaria", "clase01"))
-
 #--------------------------------------
 
 
