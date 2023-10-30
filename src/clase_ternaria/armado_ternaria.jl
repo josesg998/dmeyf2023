@@ -30,6 +30,17 @@ for i in 1:last
   end
 end
 
+## Coloca CONTINUA para aquellos clientes que dejan de estar en el paquete premium y vuelven despues varios meses
+
+for i in 1:last
+  if coalesce(df.clase_ternaria[i], "")=="BAJA+2" &&  (i+1 < last) && (coalesce( df.clase_ternaria[i+1], "")=="CONTINUA") && (df.numero_de_cliente[i] == df.numero_de_cliente[i+1])
+        df.clase_ternaria[i] = "CONTINUA"
+  end
+  if (coalesce(df.clase_ternaria[i], "")=="BAJA+1") &&  (i+1 < last) && (coalesce( df.clase_ternaria[i+1], "")=="CONTINUA") && (df.numero_de_cliente[i] == df.numero_de_cliente[i+1])
+      df.clase_ternaria[i] = "CONTINUA"
+  end
+end
+
 open(GzipCompressorStream, "competencia_03.csv.gz", "w") do stream
     CSV.write(stream, df)
 end
