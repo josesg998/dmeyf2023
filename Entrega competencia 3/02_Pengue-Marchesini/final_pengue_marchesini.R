@@ -16,7 +16,7 @@ require("lightgbm")
 PARAM <- list()
 PARAM$experimento <- "KA8240_03_pengue_marchesini"
 
-PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
+PARAM$input$dataset <- "./datasets/competencia_03_FE_pengue_marchesini.csv.gz"
 
 # meses donde se entrena el modelo
 PARAM$input$training <- c(201909,201910,201911,201912,202001,202002,202009,

@@ -34,7 +34,7 @@ PARAM <- list()
 
 PARAM$experimento <- "HT8230_03_Pengue_Marchesini"
 
-PARAM$input$dataset <- "./datasets/competencia_02.csv.gz"
+PARAM$input$dataset <- "./datasets/competencia_03_FE_pengue_marchesini.csv.gz"
 
 # los meses en los que vamos a entrenar
 #  mucha magia emerger de esta eleccion
