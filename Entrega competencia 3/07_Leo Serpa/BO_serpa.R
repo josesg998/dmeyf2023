@@ -336,11 +336,11 @@ for (campo in names(results_list)) {
 # 'selected_variables' contains variables with 'zero_ratio' equal to 1
 selected_variables
 
--------------------------------------------------------------------------
-  #Trato usar esto como filtro
-  
-  # Initialize a list to store filter conditions for each selected variable
-  filter_conditions <- list()
+
+#Trato usar esto como filtro
+
+# Initialize a list to store filter conditions for each selected variable
+filter_conditions <- list()
 
 # Loop through each selected variable in 'selected_variables'
 for (variable_name in names(selected_variables)) {
