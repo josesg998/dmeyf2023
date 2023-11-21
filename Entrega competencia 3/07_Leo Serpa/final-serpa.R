@@ -114,11 +114,11 @@ for (campo in names(results_list)) {
 # 'selected_variables' contains variables with 'zero_ratio' equal to 1
 selected_variables
 
--------------------------------------------------------------------------
-  #Trato usar esto como filtro
-  
-  # Initialize a list to store filter conditions for each selected variable
-  filter_conditions <- list()
+
+#Trato usar esto como filtro
+
+# Initialize a list to store filter conditions for each selected variable
+filter_conditions <- list()
 
 # Loop through each selected variable in 'selected_variables'
 for (variable_name in names(selected_variables)) {
@@ -144,10 +144,10 @@ dataset[combined_filter, names(selected_variables) := NA]
 # Data Drifting
 # por ahora, no hago nada
 
-# Ranking de las variables expresadas en pesos pero sin centrar en cero
-diccionario <- fread("~/buckets/b1/datasets/DiccionarioDatos_2023.csv")
+# Assuming 'df' is your dataframe
+selected_df <- dataset[, grep("^m", names(dataset))]
 
-features_pesos <- as.character(diccionario[unidad == 'pesos', campo])
+features_pesos <- names(dataset)[selected_df]
 
 # Loop through each column in features_pesos and calculate the rank
 for (i in features_pesos) {
