@@ -37,11 +37,11 @@ PARAM$finalmodel$semilla <- 151051
 #PARAM$finalmodel$optim$num_leaves <- 478
 
 #   232_0
-PARAM$finalmodel$optim$num_iterations <- 411
-PARAM$finalmodel$optim$learning_rate <- 0.090567777671882
-PARAM$finalmodel$optim$feature_fraction <- 0.870907307849918
-PARAM$finalmodel$optim$min_data_in_leaf <- 9496
-PARAM$finalmodel$optim$num_leaves <- 1024
+PARAM$finalmodel$optim$num_iterations <- 543
+PARAM$finalmodel$optim$learning_rate <- 0.0463797426198357
+PARAM$finalmodel$optim$feature_fraction <- 0.639247798653655
+PARAM$finalmodel$optim$min_data_in_leaf <- 17446
+PARAM$finalmodel$optim$num_leaves <- 1858
 
 
 #----------------------
@@ -90,8 +90,6 @@ setorderv(dataset, cols=c("foto_mes"), order=c(1L))
 
 
 
-Arreglar datos nulos en algunos meses:
-  
 reemplazar_con_na = TRUE
 
 cols_reemplazar_ceros = c("active_quarter", "internet", "mcuentas_saldo",
@@ -172,7 +170,7 @@ rm(meses, cols_reemplazar_ceros)
 
 
 
-Llenar con ceros:
+#Llenar con ceros:
   
 cols_nans_con_ceros = c("mtarjeta_visa_descuentos", "mtarjeta_master_descuentos",
                         "tmobile_app", "cmobile_app_trx")
@@ -182,13 +180,13 @@ rm(cols_nans_con_ceros)
 
 
 
-Arreglar variables con valores no esperados:
+#Arreglar variables con valores no esperados:
   
 dataset[, internet := fifelse(internet > 1, 1, internet) ]
 
 
 
-Diferencia de estampas por cliente:
+#Diferencia de estampas por cliente:
   
 # columna con diferencia de estampas por cliente
 dataset[, foto_mes_rang:= match(foto_mes, sort(unique(foto_mes))) ]
@@ -199,7 +197,7 @@ dataset[, foto_mes_rang := NULL]
 
 
 
-Juntar variables:
+#Juntar variables:
   
 if (juntar_cols)
 {
@@ -251,7 +249,7 @@ if (juntar_cols)
 
 
 
-Normalización por inflación:
+#Normalización por inflación:
   
 foto_mes = c(201901, 201902, 201903, 201904, 201905, 201906, 201907, 201908, 201909, 201910, 201911, 201912, 202001, 202002, 202003, 202004, 202005, 202006, 202007, 202008, 202009, 202010, 202011, 202012, 202101, 202102, 202103, 202104, 202105, 202106, 202107, 202108, 202109, 202110, 202111, 202112)
 
@@ -324,7 +322,7 @@ rm(mapeo_ipc, cols_pesos2, col1)
 
 
 
-Media en ventana, lag2, lag3, dif1, dif2:
+#Media en ventana, lag2, lag3, dif1, dif2:
   
 campos_media <- setdiff(
   colnames(dataset),
@@ -408,7 +406,7 @@ rm(campos_media, nuevas_cols2, nuevas_cols)
 
 
 
-Final:
+#Final:
   
 setwd("~/buckets/b1")
 #--------------------------------------
