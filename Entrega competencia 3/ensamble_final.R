@@ -3,12 +3,13 @@ require("data.table")
 
 pengue <- fread("exp/KA8240_03_pengue_marchesini/prediccion.txt")
 casalli <- fread("exp/final_casalli/prediccion.txt")
+serpa <- fread('exp/KA8240_serpa/prediccion.txt')
 
-df <- merge(pengue,casalli,by=c("numero_de_cliente","foto_mes"))
-
+df <- rbind(pengue,casalli,serpa)
+df <- df[,sum(prob),by=numero_de_cliente]
+df <- setorder(df,-V1)
 
 dir.create("exp/ensamble_1")
-df <- setorder(df,-prob)
 cortes <- seq(8000, 15000, by = 500)
 for (envios in cortes) {
   df[, Predicted := 0L]
