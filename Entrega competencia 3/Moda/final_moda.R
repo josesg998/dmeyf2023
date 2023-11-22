@@ -25,15 +25,14 @@ PARAM$input$dataset <- "./datasets/competencia_03.csv.gz"
 PARAM$input$training <- c(202010,202011,202012, 202101, 202102, 202103,202104,202105)
 PARAM$input$future <- c(202107) # meses donde se aplica el modelo
 
-PARAM$finalmodel$semilla <- c(290497, 540187, 987851, 984497, 111893, 100103, 100189, 101987, 991981, 991987,106853,
-                              191071,337511,400067,991751,729191,729199,729203,729217,729257)
+PARAM$finalmodel$semilla <- c(290497)
 
 # hiperparametros intencionalmente NO optimos
-PARAM$finalmodel$optim$num_iterations <- 1928
-PARAM$finalmodel$optim$learning_rate <- 0.0201478532971713
-PARAM$finalmodel$optim$feature_fraction <- 0.652595081166259
-PARAM$finalmodel$optim$min_data_in_leaf <- 10946
-PARAM$finalmodel$optim$num_leaves <- 306
+PARAM$finalmodel$optim$num_iterations <- 786
+PARAM$finalmodel$optim$learning_rate <- 0.0261104583891574
+PARAM$finalmodel$optim$feature_fraction <- 0.576379539798072
+PARAM$finalmodel$optim$min_data_in_leaf <- 7431
+PARAM$finalmodel$optim$num_leaves <- 169
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -264,7 +263,7 @@ for (semilla in PARAM$finalmodel$semilla){
     data.matrix(dapply[, campos_buenos, with = FALSE])
   )
   
-  tb_entrega[, paste0("prob_",semilla) := prediccion]
+  tb_entrega[, prob := prediccion]
   
 }
 # grabo las probabilidad del modelo
@@ -272,7 +271,7 @@ fwrite(tb_entrega,
        file = "prediccion.csv")
 
 # ordeno por probabilidad descendente
-#setorder(tb_entrega, -prob)
+setorder(tb_entrega, -prob)
 
 
 # genero archivos con los  "envios" mejores
@@ -281,15 +280,15 @@ fwrite(tb_entrega,
 # suba TODOS los archivos a Kaggle
 # espera a la siguiente clase sincronica en donde el tema sera explicado
 
-#cortes <- seq(8000, 15000, by = 500)
-#for (envios in cortes) {
-#  tb_entrega[, Predicted := 0L]
-#  tb_entrega[1:envios, Predicted := 1L]
+cortes <- seq(8000, 15000, by = 500)
+for (envios in cortes) {
+  tb_entrega[, Predicted := 0L]
+  tb_entrega[1:envios, Predicted := 1L]
 
-#fwrite(tb_entrega[, list(numero_de_cliente, Predicted)],
-#  file = paste0(PARAM$experimento, "_", envios, ".csv"),
-#  sep = ","
-#)
-#}
+fwrite(tb_entrega[, list(numero_de_cliente, Predicted)],
+  file = paste0(PARAM$experimento, "_", envios, ".csv"),
+  sep = ","
+)
+}
 
 cat("\n\nLa generacion de los archivos para Kaggle ha terminado\n")
