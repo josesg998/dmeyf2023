@@ -22,7 +22,7 @@ PARAM$experimento <- paste("KA8240",metodo_imputacion,sep="_")
 PARAM$input$dataset <- "./datasets/competencia_03.csv.gz"
 
 # meses donde se entrena el modelo
-PARAM$input$training <- c(202010,202011,202012, 202101, 202102, 202103,202104,202105)
+PARAM$input$training <- c(202010,202011,202012, 202101, 202102, 202103,202104,202105,202106,202107)
 PARAM$input$future <- c(202107) # meses donde se aplica el modelo
 
 PARAM$finalmodel$semilla <- c(290497)
