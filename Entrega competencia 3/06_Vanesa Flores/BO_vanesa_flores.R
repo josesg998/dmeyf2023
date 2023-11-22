@@ -32,7 +32,7 @@ PARAM <- list()
 PARAM$experimento <- "HT5230_vanesa_flores"
 
 
-PARAM$input$dataset <- "./datasets/competencia_02_fe_202012.csv.gz"
+PARAM$input$dataset <- "datasets/competencia_02_fe_202012.csv.gz"
 
 # los meses en los que vamos a entrenar
 PARAM$input$training <- c(202012, 202101, 202102, 202103, 202104, 202105,202106,202107)
