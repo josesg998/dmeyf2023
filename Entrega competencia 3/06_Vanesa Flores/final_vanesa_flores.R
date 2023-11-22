@@ -16,7 +16,7 @@ require("lightgbm")
 PARAM <- list()
 PARAM$experimento <- "KA5240_vanesa_flores"
 
-PARAM$input$dataset <- "./datasets/competencia_02_fe_202012.csv.gz"
+PARAM$input$dataset <- "./datasets/competencia_03_FE_Flores.csv.gz"
 
 # meses donde se entrena el modelo
 PARAM$input$training <- c(202012, 202101, 202102, 202103, 202104, 202105,202106,202107)
@@ -24,11 +24,11 @@ PARAM$input$future <- c(202109) # meses donde se aplica el modelo
 # Tomo parámetros obtenidos de BO de casi 5 días (1 mejor ganancia)
 PARAM$finalmodel$semilla <- 880007
 
-PARAM$finalmodel$num_iterations <- 6875
-PARAM$finalmodel$learning_rate <- 0.0133326486877864
-PARAM$finalmodel$feature_fraction <- 0.216652156817687
-PARAM$finalmodel$min_data_in_leaf <- 516
-PARAM$finalmodel$num_leaves <- 685
+PARAM$finalmodel$num_iterations <- 332
+PARAM$finalmodel$learning_rate <- 0.0353492857681127
+PARAM$finalmodel$feature_fraction <- 0.497982733742354
+PARAM$finalmodel$min_data_in_leaf <- 142
+PARAM$finalmodel$num_leaves <- 1023
 
 
 PARAM$finalmodel$max_bin <- 31
