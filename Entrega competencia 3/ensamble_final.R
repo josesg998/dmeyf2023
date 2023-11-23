@@ -5,8 +5,12 @@ pengue <- fread("exp/KA8240_03_pengue_marchesini/prediccion.txt")
 casalli <- fread("exp/final_casalli/prediccion.txt")
 serpa <- fread('exp/KA8240_serpa/prediccion.txt')
 flores <- fread('exp/KA5240_vanesa_flores/prediccion.txt')
+moda <- fread('exp/KA8240_mode/prediccion.csv')[,list(numero_de_cliente,foto_mes,prob)]
 
-df <- rbind(pengue,casalli,serpa,flores)
+df <- rbind(pengue,
+            casalli,
+            serpa,moda,
+            flores)
 df <- df[,sum(prob),by=numero_de_cliente]
 df <- setorder(df,-V1)
 

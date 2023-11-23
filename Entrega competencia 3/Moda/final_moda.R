@@ -15,15 +15,17 @@ require("lightgbm")
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
 #INDICAR METODO DE IMPUTACION
-metodo_imputacion <- "mode"
+metodo_imputacion <- "mode2"
 
 PARAM$experimento <- paste("KA8240",metodo_imputacion,sep="_")
 
 PARAM$input$dataset <- "./datasets/competencia_03.csv.gz"
 
 # meses donde se entrena el modelo
-PARAM$input$training <- c(202010,202011,202012, 202101, 202102, 202103,202104,202105,202106,202107)
-PARAM$input$future <- c(202107) # meses donde se aplica el modelo
+PARAM$input$training <- c(201909, 201910, 201911, 201912, 202001, 202002, 
+                          202009, 202010, 202011, 202012, 202101, 202102, 202103,
+                          202104,202105,202106,202107)
+PARAM$input$future <- c(202109) # meses donde se aplica el modelo
 
 PARAM$finalmodel$semilla <- c(290497)
 
@@ -110,7 +112,7 @@ dataset[combined_filter, names(selected_variables) := NA]
 #------------------------------------------------------------------------------
 #Imputación de nulos
 
-taining_subset <- dataset[foto_mes %in% c(202010, 202011, 202012, 202101, 202102, 202103, 202104, 202105,202106,202107), ..campos_buenos]
+taining_subset <- dataset[foto_mes %in% PARAM$input$training, ..campos_buenos]
 
 # small_dataset <- dataset[foto_mes %in% c(202010, 202011, 202012, 202101, 202102, 202103, 202104, 202105)]
 
