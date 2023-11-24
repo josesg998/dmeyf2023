@@ -73,7 +73,7 @@ setorderv(dataset, cols=c("foto_mes"), order=c(1L))
 
 ## -------------------------------------------------------------------------------------------------
 meses_a_usar = c(202003, 202004, 202005, 202006, 202007, 202008, 202009,
-                 202010, 202011, 202012, 202101, 202102, 202103, 202104, 202105, 202106, 202107)
+                 202010, 202011, 202012, 202101, 202102, 202103, 202104, 202105, 202106, 202107,202108,202109)
 
 dataset = dataset[foto_mes %in% meses_a_usar]
 
@@ -201,32 +201,22 @@ param_completo <- c(
   PARAM$finalmodel$lgb_basicos,
   PARAM$finalmodel$optim)
 
-semillas = c(886609, 201821, 623423, 105389, 151051,
-             978323, 594421, 797897, 911159, 892627,
-             605167, 982337, 178807, 596053, 435583,
-             451547, 970699, 717659, 671303, 345647)
+semillas = c(886609)#, 201821, 623423, 105389, 151051,
+             #978323, 594421, 797897, 911159, 892627,
+             #605167, 982337, 178807, 596053, 435583,
+             #451547, 970699, 717659, 671303, 345647)
 
 tb_fs = data.table(semilla = semillas,
                    gan_max = 0,
                    envios_max = 0)
 
-for (s in semillas) {
-  param_completo$seed = s
+#for (s in semillas) {
+param_completo$seed = semillas[1]
 
   modelo <- lgb.train(
     data = dtrain,
     param = param_completo,
   )
-
-  if (s == 886609){
-    # imprimo la importancia de variables, sólo para una semilla
-    tb_importancia <- as.data.table(lgb.importance(modelo))
-    archivo_importancia <- paste0("impo_", PARAM$nombreexp,".txt")
-    fwrite(tb_importancia,
-      file = archivo_importancia,
-      sep = "\t"
-    )
-  }
 
   #--------------------------------------
   # aplico el modelo a los datos nuevos
@@ -244,38 +234,42 @@ for (s in semillas) {
   setorder(tb_entrega, -prob)
 
   cortes <- seq(8000, 15000, by = 500)
-  tb_f <- data.table(nenvios = cortes)
-  tb_f[, gan := 0]
+  #tb_f <- data.table(nenvios = cortes)
+  #tb_f[, gan := 0]
 
   for (envios in cortes) {
     tb_entrega[, Predicted := 0L]
     tb_entrega[1:envios, Predicted := 1L]
 
-    tb_entrega[, gan := fifelse((Predicted == 1) & (clase_ternaria == "BAJA+2"),
-                                273000, -7000)]
+    #tb_entrega[, gan := fifelse((Predicted == 1) & (clase_ternaria == "BAJA+2"),
+                        #        273000, -7000)]
 
-    tb_entrega[, gan_acum := cumsum(gan)]
-    gan_tot = tb_entrega[envios, gan_acum]
-    tb_f[nenvios == envios, gan := gan_tot]
+    #tb_entrega[, gan_acum := cumsum(gan)]
+    #gan_tot = tb_entrega[envios, gan_acum]
+    #tb_f[nenvios == envios, gan := gan_tot]
   }
 
-  tb_f[, gan_suavizada :=
-    frollmean(
-      x = gan, n = 3, align = "center",
-      na.rm = FALSE, hasNA = FALSE
-    )]
+  #tb_f[, gan_suavizada :=
+  #  frollmean(
+  #    x = gan, n = 3, align = "center",
+  #    na.rm = FALSE, hasNA = FALSE
+  #  )]
 
-  gan_max_ <- tb_f[, max(gan_suavizada, na.rm = TRUE)]
-  pos_max_ <- which.max(tb_f[, gan_suavizada])
-  envios_max_ <- tb_f[pos_max_, nenvios]
+  #gan_max_ <- tb_f[, max(gan_suavizada, na.rm = TRUE)]
+  #pos_max_ <- which.max(tb_f[, gan_suavizada])
+  #envios_max_ <- tb_f[pos_max_, nenvios]
 
-  tb_fs[ semilla == s, gan_max := (gan_max_) ]
-  tb_fs[ semilla == s, envios_max := (envios_max_) ]
-}
+  #tb_fs[ semilla == s, gan_max := (gan_max_) ]
+  #tb_fs[ semilla == s, envios_max := (envios_max_) ]
+#}
 
-fwrite(tb_fs,
-  file = paste0(PARAM$nombreexp, "_res.csv"),
-  sep = ","
+#fwrite(tb_fs,
+#  file = paste0(PARAM$nombreexp, "_res.csv"),
+#  sep = ","
+#)
+
+fwrite(tb_entrega,
+       file = paste0(PARAM$nombreexp, "_prob.csv"),
+       sep = ","
 )
-
 
