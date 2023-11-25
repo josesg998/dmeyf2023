@@ -478,13 +478,15 @@ tb_entrega_aux[,prob:=prediccion]
 
 tb_entrega <- rbind(tb_entrega,tb_entrega_aux)
 
-}
-
 # grabo las probabilidad del modelo
 fwrite(tb_entrega,
-       file = "prediccion.txt",
+       file = paste0("prediccion",semilla,".txt"),
        sep = "\t"
 )
+
+}
+
+
 
 tb_entrega <- tb_entrega[,sum(prob),by=numero_de_cliente]
 
