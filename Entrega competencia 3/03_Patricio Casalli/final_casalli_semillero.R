@@ -13,7 +13,7 @@ require("zoo")
 # defino los parametros de la corrida, en una lista, la variable global  PARAM
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
-PARAM$experimento <- "final_casalli"
+PARAM$experimento <- "final_casalli_semillero"
 
 PARAM$input$dataset <- "./datasets/competencia_03.csv.gz"
 
@@ -27,9 +27,9 @@ juntar_cols = TRUE
 
 PARAM$input$future <- c(202109) # meses donde se aplica el modelo
 PARAM$finalmodel$semilla <- c(290497, 540187, 987851, 984497, 111893, 
-                              100103, 100189, 101987, 991981, 991987,
-                              106853, 191071, 337511, 400067, 991751,
-                              729191, 729199, 729203, 729217, 729257)
+                              100103, 100189, 101987, 991981, 991987)#,
+                              #106853, 191071, 337511, 400067, 991751,
+                              #729191, 729199, 729203, 729217, 729257)
 
 #   237_0 
 #PARAM$finalmodel$optim$num_iterations <- 829
@@ -405,6 +405,9 @@ dtrain <- lgb.Dataset(
   label = dataset[train == 1L, clase01]
 )
 
+# genero la tabla de entrega
+tb_entrega <- data.table()
+
 for (semilla in PARAM$finalmodel$semilla){
 get(paste0("Arranco con semilla ",semilla))
 #----------------------
@@ -468,9 +471,14 @@ prediccion <- predict(
   data.matrix(dapply[, campos_buenos, with = FALSE])
 )
 
-# genero la tabla de entrega
-tb_entrega <- dapply[, list(numero_de_cliente, foto_mes)]
-tb_entrega[, prob := prediccion]
+tb_entrega_aux <- dapply[, list(numero_de_cliente, foto_mes)]
+
+tb_entrega_aux[,semilla:=semilla]
+tb_entrega_aux[,prob:=prediccion]
+
+tb_entrega <- rbind(tb_entrega,tb_entrega_aux)
+
+}
 
 # grabo las probabilidad del modelo
 fwrite(tb_entrega,
@@ -478,10 +486,10 @@ fwrite(tb_entrega,
        sep = "\t"
 )
 
-}
+tb_entrega <- tb_entrega[,sum(prob),by=numero_de_cliente]
 
 # ordeno por probabilidad descendente
-setorder(tb_entrega, -prob)
+setorder(tb_entrega, -V1)
 
 # genero archivos con los  "envios" mejores
 # deben subirse "inteligentemente" a Kaggle para no malgastar submits
