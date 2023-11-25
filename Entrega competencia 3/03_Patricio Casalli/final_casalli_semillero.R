@@ -409,7 +409,7 @@ dtrain <- lgb.Dataset(
 tb_entrega <- data.table()
 
 for (semilla in PARAM$finalmodel$semilla){
-get(paste0("Arranco con semilla ",semilla))
+cat(paste0("Arranco con semilla ",semilla))
 #----------------------
 # Hiperparametros FIJOS de  lightgbm
 PARAM$finalmodel$lgb_basicos <- list(
