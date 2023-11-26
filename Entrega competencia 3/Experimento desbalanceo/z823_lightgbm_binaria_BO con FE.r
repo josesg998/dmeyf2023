@@ -93,7 +93,7 @@ PARAM$bo_lgb <- makeParamSet(
   makeNumericParam("feature_fraction", lower = 0.01, upper = 1.0),
   makeIntegerParam("num_leaves", lower = 8L, upper = 1024L),
   makeIntegerParam("min_data_in_leaf", lower = 100L, upper = 50000L),
-  makeIntegerParam("neg_bagging_fraction", lower = 0.1, upper = 1.0)
+  makeNumericParam("neg_bagging_fraction", lower = 0.1, upper = 1.0)
 )
 
 # si usted es ambicioso, y tiene paciencia, podria subir este valor a 100
