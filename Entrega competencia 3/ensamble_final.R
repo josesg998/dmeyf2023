@@ -13,7 +13,7 @@ serpa <- fread('exp/KA8240_serpa/prediccion.txt')
 # Entrega de Flores en competencia 02
 flores <- fread('exp/KA5240_vanesa_flores/prediccion.txt')
 
-# Experimento de lags de Bettachini y Kalousek
+# Experimento de lags de Casali y Costa Vila (V4)
 ## con 7 meses
 lags <- fread('exp/exp_final/V4_2_prob.csv')[,list(numero_de_cliente,foto_mes,prob)]
 ## con varios meses
